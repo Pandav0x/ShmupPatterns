@@ -54,7 +54,6 @@ function update ()
     var cursors = this.input.keyboard.createCursorKeys();
     if(cursors.up.isDown){
         this.enemy.moveUp();
-        console.log("u");
     }
     else if(cursors.down.isDown){
         this.enemy.moveDown();
@@ -69,7 +68,7 @@ function update ()
 
 class Enemy{
     context = null;
-    firerate = 500;
+    firerate = 750;
     sprite = null;
     moveSpeed = 5;
     coordinate = {
