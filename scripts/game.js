@@ -101,7 +101,6 @@ class Enemy{
             callback: function(){
                 bullets.createBullets();
             },
-            //repeat: 3
             loop: true
         });
     }
@@ -125,7 +124,7 @@ class Enemy{
 
 class BulletCollection{
     context = null;
-    bulletNumber = 100;
+    bulletNumber = 4;
     bullets = [];
     origin = {
         x: null,
@@ -150,7 +149,9 @@ class BulletCollection{
         var bulletNumber = this.bullets.length | 0;
         for(let i = bulletNumber; i < (this.bulletNumber + bulletNumber); i++){
             this.bullets[i] = new Bullet(this.context, this.origin.x, this.origin.y);
-            this.bullets[i].angle = i * 10;
+            var degAngle = i * (360/this.bulletNumber);
+            var radAngle = degAngle * Math.PI / 180;
+            this.bullets[i].angle =  radAngle;
             this.bullets[i].sprite = this.context.add.sprite(this.bullets[i].x, this.bullets[i].y, 'bullet');
         }
     }
