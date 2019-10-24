@@ -27,8 +27,11 @@ function preload ()
 {
     this.resourceLocation = "./assets/";
 
-    this.load.image('enemy', this.resourceLocation + "enemy.png");
-    this.load.image('bullet', this.resourceLocation + "bullet.png")
+    this.load.image('player', this.resourceLocation + "player/sprite.png");
+    this.load.image('player_bullet', this.resourceLocation + "player/bullet.png");
+
+    this.load.image('enemy', this.resourceLocation + "enemy/sprite.png");
+    this.load.image('enemy_bullet', this.resourceLocation + "enemy/bullet.png");
 }
 
 function create ()
@@ -45,6 +48,9 @@ function create ()
     //enemy
     this.enemy = new Enemy(this, (gameConfig.width/2), (gameConfig.height/2));
 
+    //player
+    this.player = new Player(this, (3 * (gameConfig.width/4)), (3 * (gameConfig.height/4)));
+
 }
 
 function update ()
@@ -53,16 +59,16 @@ function update ()
 
     var cursors = this.input.keyboard.createCursorKeys();
     if(cursors.up.isDown){
-        this.enemy.moveUp();
+        this.player.moveUp();
     }
     else if(cursors.down.isDown){
-        this.enemy.moveDown();
+        this.player.moveDown();
     }
     else if (cursors.left.isDown){
-        this.enemy.moveLeft();
+        this.player.moveLeft();
     }
     else if (cursors.right.isDown){
-        this.enemy.moveRight();
+        this.player.moveRight();
     }
 }
 
@@ -142,7 +148,6 @@ class BulletCollection{
         this.bullets.forEach(function(bullet, index, parent){
             if(!bullet.move())
                 parent.splice(index, 1);
-                console.log()
         });
     }
     createBullets = function(){
@@ -152,7 +157,7 @@ class BulletCollection{
             var degAngle = i * (360/this.bulletNumber);
             var radAngle = degAngle * Math.PI / 180;
             this.bullets[i].angle =  radAngle;
-            this.bullets[i].sprite = this.context.add.sprite(this.bullets[i].x, this.bullets[i].y, 'bullet');
+            this.bullets[i].sprite = this.context.add.sprite(this.bullets[i].x, this.bullets[i].y, 'enemy_bullet');
         }
     }
     setPosition = function(newX, newY) {
@@ -187,5 +192,60 @@ class Bullet{
         this.sprite.y = this.position.y;
         return true;
     }
+}
 
+class Player{
+    context = null;
+    firerate = 750;
+    sprite = null;
+    moveSpeed = 5;
+    coordinate = {
+        x: null,
+        y: null
+    };
+    bullets;
+
+    constructor(context, coordX, coordY){
+        this.context = context;
+        this.coordinate.x = coordX;
+        this.coordinate.y = coordY;
+        this.bullets = new BulletCollection(context, this.coordinate.x, this.coordinate.y);
+        this.sprite = this.context.add.sprite(this.coordinate.x, this.coordinate.y, 'player').setScale(spriteScale);
+        this.draw();
+    }
+    shoot = function() {
+        this.behavior();
+        this.bullets.moveAll();
+    }
+    draw = function(){
+        this.bullets.setPosition(this.coordinate.x, this.coordinate.y);
+        this.sprite.x = this.coordinate.x;
+        this.sprite.y = this.coordinate.y;
+    }
+    behavior = function() {
+        var bullets =  this.bullets;
+        this.context.time.addEvent({
+            delay: this.firerate,
+            callback: function(){
+                bullets.createBullets();
+            },
+            loop: true
+        });
+    }
+    moveUp = function(){
+        this.coordinate.y -= this.moveSpeed;
+        this.draw();
+    };
+    moveDown = function(){
+        this.coordinate.y += this.moveSpeed;
+        this.draw();
+    };
+    moveLeft = function(){
+        this.coordinate.x -= this.moveSpeed;
+        this.draw();
+    };
+    moveRight = function(){
+        this.coordinate.x += this.moveSpeed;
+        this.draw();
+    };
 }
