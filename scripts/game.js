@@ -1,6 +1,5 @@
 'use strict';
 
-var redirectTo = "./redirect.html";
 var spriteScale = 1.5;
 
 var gameConfig = {
@@ -57,7 +56,7 @@ function create ()
 
 function update ()
 {
-    this.enemy.shoot();
+    this.enemy.update();
     this.player.update();
 
     var cursors = this.input.keyboard.createCursorKeys();
@@ -79,81 +78,9 @@ function update ()
     }
 }
 
-class Enemy{
-    context = null;
-    firerate = 750;
-    sprite = null;
-    moveSpeed = 5;
-    coordinate = {
-        x: null,
-        y: null
-    };
-    bullets;
-
-    constructor(context, coordX, coordY){
-        this.context = context;
-        this.coordinate.x = coordX;
-        this.coordinate.y = coordY;
-        this.bullets = new BulletCollection(
-            context,
-            this.coordinate.x,
-            this.coordinate.y,
-            'enemy_bullet',
-            function(){
-                this.position.x += (90*Math.cos(this.angle))*this.speed;
-                this.position.y += (90*Math.sin(this.angle))*this.speed;
-                if(this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
-                {
-                    this.sprite.destroy();
-                    return false;
-                }
-                this.sprite.x = this.position.x;
-                this.sprite.y = this.position.y;
-                return true;
-            });
-        this.sprite = this.context.add.sprite(this.coordinate.x, this.coordinate.y, 'enemy').setScale(spriteScale);
-        this.draw();
-        this.behavior();
-    }
-    shoot = function() {
-        this.bullets.moveAll();
-    }
-    draw = function(){
-        this.bullets.setPosition(this.coordinate.x, this.coordinate.y);
-        this.sprite.x = this.coordinate.x;
-        this.sprite.y = this.coordinate.y;
-    }
-    behavior = function() {
-        var bullets =  this.bullets;
-        this.context.time.addEvent({
-            delay: this.firerate,
-            callback: function(){
-                bullets.createBullets();
-            },
-            loop: true
-        });
-    }
-    moveUp = function(){
-        this.coordinate.y -= this.moveSpeed;
-        this.draw();
-    };
-    moveDown = function(){
-        this.coordinate.y += this.moveSpeed;
-        this.draw();
-    };
-    moveLeft = function(){
-        this.coordinate.x -= this.moveSpeed;
-        this.draw();
-    };
-    moveRight = function(){
-        this.coordinate.x += this.moveSpeed;
-        this.draw();
-    };
-}
-
 class BulletCollection{
     context = null;
-    bulletNumber = 4;
+    bulletNumber = null;
     bullets = [];
     origin = {
         x: null,
@@ -162,12 +89,13 @@ class BulletCollection{
     movePattern;
     spriteName;
 
-    constructor(context, origX, origY, spriteName, movePattern) {
+    constructor(context, origX, origY, spriteName, bulletNumber, movePattern) {
         this.context = context;
         this.origin.x = origX;
         this.origin.y = origY;
         this.movePattern = movePattern;
         this.spriteName = spriteName;
+        this.bulletNumber = bulletNumber;
     }
     moveAll = function(){
         if(this.bullets.length === 0)
@@ -185,7 +113,7 @@ class BulletCollection{
             var degAngle = i * (360/this.bulletNumber);
             var radAngle = degAngle * Math.PI / 180;
             this.bullets[i].angle =  radAngle;
-            this.bullets[i].sprite = this.context.add.sprite(this.bullets[i].x, this.bullets[i].y, this.spriteName);
+            this.bullets[i].sprite = this.context.add.sprite(this.bullets[i].x, this.bullets[i].y, this.spriteName).setScale(spriteScale);
         }
     }
     setPosition = function(newX, newY) {
@@ -211,10 +139,10 @@ class Bullet{
     move = function(){}
 }
 
-class Player{
+class Actor{
     context = null;
     sprite = null;
-    fireRate = 100;
+    fireRate = null;
     moveSpeed = 5;
     coordinate = {
         x: null,
@@ -222,45 +150,22 @@ class Player{
     };
     bullets;
 
-    constructor(context, coordX, coordY){
+    constructor(context, coordX, coordY, spriteName, fireRate){
         this.context = context;
         this.coordinate.x = coordX;
         this.coordinate.y = coordY;
-        this.bullets = new BulletCollection(
-            context,
-            this.coordinate.x,
-            this.coordinate.y,
-            'player_bullet',
-            function(){
-                this.position.y += (90*Math.sin(-1))*this.speed;
-                if(this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
-                {
-                    this.sprite.destroy();
-                    return false;
-                }
-                this.sprite.x = this.position.x;
-                this.sprite.y = this.position.y;
-                return true;
-            });
-        this.sprite = this.context.add.sprite(this.coordinate.x, this.coordinate.y, 'player').setScale(spriteScale);
+        this.fireRate = fireRate;
+        this.sprite = this.context.add.sprite(this.coordinate.x, this.coordinate.y, spriteName).setScale(spriteScale);
+        this.bullets = new BulletCollection();
         this.draw();
     }
     update = function() {
         this.bullets.moveAll();
     }
-    shoot = function(){
-        if(typeof(this.lastTimeShot) == 'undefined' || (new Date() - this.lastTimeShot) >= this.fireRate){
-            this.lastTimeShot = new Date();
-            this.behavior();
-        }
-    }
     draw = function(){
         this.bullets.setPosition(this.coordinate.x, this.coordinate.y);
         this.sprite.x = this.coordinate.x;
         this.sprite.y = this.coordinate.y;
-    }
-    behavior = function() {
-                this.bullets.createBullets();
     }
     moveUp = function(){
         this.coordinate.y -= this.moveSpeed;
@@ -278,4 +183,70 @@ class Player{
         this.coordinate.x += this.moveSpeed;
         this.draw();
     };
+}
+
+class Enemy extends Actor{
+    constructor(context, coordX, coordY){
+        super(context, coordX, coordY, 'enemy', 750);
+        this.bullets = new BulletCollection(
+            context,
+            this.coordinate.x,
+            this.coordinate.y,
+            'enemy_bullet',
+            4,
+            function(){
+                this.position.x += (90*Math.cos(this.angle))*this.speed;
+                this.position.y += (90*Math.sin(this.angle))*this.speed;
+                if(this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
+                {
+                    this.sprite.destroy();
+                    return false;
+                }
+                this.sprite.x = this.position.x;
+                this.sprite.y = this.position.y;
+                return true;
+            }
+        );
+        this.shoot();
+    }
+    shoot = function() {
+        var bullets =  this.bullets;
+        this.context.time.addEvent({
+            delay: this.fireRate,
+            callback: function(){
+                bullets.createBullets();
+            },
+            loop: true
+        });
+    }
+}
+
+class Player extends Actor{
+    constructor(context, coordX, coordY){
+        super(context, coordX, coordY, 'player', 100);
+        this.bullets = new BulletCollection(
+            context,
+            this.coordinate.x,
+            this.coordinate.y,
+            'player_bullet',
+            1,
+            function(){
+                this.position.y += (90*Math.sin(-1))*this.speed;
+                if(this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
+                {
+                    this.sprite.destroy();
+                    return false;
+                }
+                this.sprite.x = this.position.x;
+                this.sprite.y = this.position.y;
+                return true;
+            }
+        );
+    }
+    shoot = function(){
+        if(typeof(this.lastTimeShot) == 'undefined' || (new Date() - this.lastTimeShot) >= this.fireRate){
+            this.lastTimeShot = new Date();
+            this.bullets.createBullets();
+        }
+    }
 }
