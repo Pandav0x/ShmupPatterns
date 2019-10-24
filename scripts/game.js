@@ -214,6 +214,7 @@ class Bullet{
 class Player{
     context = null;
     sprite = null;
+    fireRate = 100;
     moveSpeed = 5;
     coordinate = {
         x: null,
@@ -248,7 +249,10 @@ class Player{
         this.bullets.moveAll();
     }
     shoot = function(){
-        this.behavior();
+        if(typeof(this.lastTimeShot) == 'undefined' || (new Date() - this.lastTimeShot) >= this.fireRate){
+            this.lastTimeShot = new Date();
+            this.behavior();
+        }
     }
     draw = function(){
         this.bullets.setPosition(this.coordinate.x, this.coordinate.y);
