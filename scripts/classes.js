@@ -68,6 +68,39 @@ const BulletPatternShape = {
     DIAMOND: 2
 };
 
+class BulletPatternProvider{
+    static getPattern(patternType){
+        var pattern = "";
+        switch(patternType)
+        {
+            case BulletPatternShape.UP_STREAM:
+                console.log("upstream it is")
+                pattern += "this.position.y += (90*Math.sin(-1))*this.speed;";
+                break;
+            case BulletPatternShape.CIRCLE:
+                console.log("circle it is")
+                pattern += "this.position.x += (90*Math.cos(this.angle))*this.speed;";
+                pattern += "this.position.y += (90*Math.sin(this.angle))*this.speed;";
+                break;
+            case BulletPatternShape.DIAMOND:
+                console.log("diamond it is")
+                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
+                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
+                break;
+            default:
+                return;
+        }
+        pattern += "if( this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0){";
+        pattern += "this.sprite.destroy();";
+        pattern += "return false;}";
+        pattern += "this.sprite.x = this.position.x;";
+        pattern += "this.sprite.y = this.position.y;"
+        pattern += "return true;";
+
+        console.log(pattern)
+        return new Function("", pattern);
+    }
+}
 
 class Actor{
     context = null;
@@ -119,26 +152,7 @@ class Enemy extends Actor{
             this.coordinate.y,
             'enemy_bullet',
             30,
-            function(){
-                //CIRCLE
-                //*
-                this.position.x += (90*Math.cos(this.angle))*this.speed;
-                this.position.y += (90*Math.sin(this.angle))*this.speed;
-                //*/
-                //DIAMOND
-                /*
-                this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;
-                this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;
-                //*/
-                if( this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
-                {
-                    this.sprite.destroy();
-                    return false;
-                }
-                this.sprite.x = this.position.x;
-                this.sprite.y = this.position.y;
-                return true;
-            }
+            BulletPatternProvider.getPattern(BulletPatternShape.CIRCLE)
         );
         this.shoot();
     }
@@ -163,17 +177,7 @@ class Player extends Actor{
             this.coordinate.y,
             'player_bullet',
             1,
-            () =>{
-                this.position.y += (90*Math.sin(-1))*this.speed;
-                if( this.position.x > gameConfig.width || this.position.x < 0 || this.position.y > gameConfig.height || this.position.y < 0)
-                {
-                    this.sprite.destroy();
-                    return false;
-                }
-                this.sprite.x = this.position.x;
-                this.sprite.y = this.position.y;
-                return true;
-            }
+            BulletPatternProvider.getPattern(BulletPatternShape.UP_STREAM)
         );
     }
     shoot = function(){
