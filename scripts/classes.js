@@ -65,7 +65,10 @@ class Bullet{
 const BulletPatternShape = {
     UP_STREAM: 0,
     CIRCLE: 1,
-    DIAMOND: 2
+    DIAMOND: 2,
+    TESTS: 3,
+    SPINNING_CIRCLE: 4,
+    SPINNING_DIAMOND: 5
 };
 
 class BulletPatternProvider{
@@ -74,19 +77,30 @@ class BulletPatternProvider{
         switch(patternType)
         {
             case BulletPatternShape.UP_STREAM:
-                console.log("upstream it is")
                 pattern += "this.position.y += (90*Math.sin(-1))*this.speed;";
                 break;
             case BulletPatternShape.CIRCLE:
-                console.log("circle it is")
                 pattern += "this.position.x += (90*Math.cos(this.angle))*this.speed;";
                 pattern += "this.position.y += (90*Math.sin(this.angle))*this.speed;";
                 break;
             case BulletPatternShape.DIAMOND:
-                console.log("diamond it is")
                 pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
                 pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
                 break;
+            case BulletPatternShape.TESTS:
+                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
+                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
+                break;
+            case BulletPatternShape.SPINNING_CIRCLE:
+                pattern += "this.position.x += (90*Math.cos(this.angle))*this.speed;";
+                pattern += "this.position.y += (90*Math.sin(this.angle))*this.speed;";
+                pattern += "this.angle += 0.015;";
+                break;
+            case BulletPatternShape.SPINNING_DIAMOND:
+                    pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
+                    pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
+                    pattern += "this.angle += 0.017;"
+                    break;
             default:
                 return;
         }
@@ -97,7 +111,6 @@ class BulletPatternProvider{
         pattern += "this.sprite.y = this.position.y;"
         pattern += "return true;";
 
-        console.log(pattern)
         return new Function("", pattern);
     }
 }
@@ -152,7 +165,7 @@ class Enemy extends Actor{
             this.coordinate.y,
             'enemy_bullet',
             30,
-            BulletPatternProvider.getPattern(BulletPatternShape.CIRCLE)
+            BulletPatternProvider.getPattern(BulletPatternShape.SPINNING_DIAMOND)
         );
         this.shoot();
     }
@@ -176,7 +189,7 @@ class Player extends Actor{
             this.coordinate.x,
             this.coordinate.y,
             'player_bullet',
-            1,
+            5,
             BulletPatternProvider.getPattern(BulletPatternShape.UP_STREAM)
         );
     }
