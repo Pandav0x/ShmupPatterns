@@ -1,8 +1,9 @@
 'use strict';
 
-var spriteScale = 1.5;
+let spriteScale = 1.5;
 
-var gameConfig = {
+let gameConfig = {
+    parent: document.getElementById("game"),
     type: Phaser.AUTO,
     width: 500 * spriteScale,
     height: 500 * spriteScale,
@@ -20,7 +21,7 @@ var gameConfig = {
     }
 };
 
-var game = new Phaser.Game(gameConfig);
+let game = new Phaser.Game(gameConfig);
 
 function preload ()
 {
@@ -37,20 +38,28 @@ function preload ()
 
 function create ()
 {
-    //bounds
-    var bounds = {
+    //boundaries
+    let boundaries = {
         top: true,
         bottom: true,
         left: true,
         right: true
     };
-    this.physics.world.setBounds = bounds;
+    this.physics.world.setBounds = boundaries;
 
     //enemy
-    this.enemy = new Enemy(this, (gameConfig.width/2), (gameConfig.height/2));
+    this.enemy = new Enemy(
+        this,
+        (gameConfig.width/2),
+        (gameConfig.height/2)
+    );
 
     //player
-    this.player = new Player(this, (3 * (gameConfig.width/4)), (3 * (gameConfig.height/4)));
+    this.player = new Player(
+        this,
+        (3 * (gameConfig.width/4)),
+        (3 * (gameConfig.height/4))
+    );
 
 }
 
@@ -59,7 +68,7 @@ function update ()
     this.enemy.update();
     this.player.update();
 
-    var cursors = this.input.keyboard.createCursorKeys();
+    let cursors = this.input.keyboard.createCursorKeys();
     if(cursors.up.isDown){
         this.player.moveUp();
     }
