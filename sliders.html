@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sliders</title>
+    <style>
+        #wrapper{
+            display: grid;
+            grid-template-rows: auto auto;
+        }
+
+        #game{
+            grid-row: 1 / span 1;
+            grid-column: 1 / span 1;
+        }
+
+        #sliders{
+            grid-row: 1 / span 1;
+            grid-column: 2 / span 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="game">
+        </div>
+
+        <div id="sliders">
+            <div id="slider-left">
+                <h2><i>x</i></h2>
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+            </div>
+            <div id="slider-right">
+                <h2><i>y</i></h2>
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+                <input type="range" name="points" min="0" max="10">
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.js"></script>
+    <script src="./scripts/classes.js"></script>
+    <script src="./scripts/game.js"></script>
+</body>
+</html>
