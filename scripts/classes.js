@@ -70,10 +70,7 @@ const BulletPatternShape = {
     UP_STREAM: 0,
     CIRCLE: 1,
     DIAMOND: 2,
-    TESTS: 3,
-    SPINNING_CIRCLE: 4,
-    SPINNING_DIAMOND: 5,
-    DOUBLE_EIGHT: 6,
+    DOUBLE_EIGHT: 3,
 };
 
 class BulletPatternProvider{
@@ -91,10 +88,6 @@ class BulletPatternProvider{
             case BulletPatternShape.DIAMOND:
                 pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
                 pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
-                break;
-            case BulletPatternShape.SPINNING_DIAMOND: //does not spin
-                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))* this.speed;";
-                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))* this.speed;";
                 break;
             case BulletPatternShape.DOUBLE_EIGHT:
                 pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*(Math.tan(this.angle) * this.speed);";
@@ -164,7 +157,7 @@ class Enemy extends Actor{
             this.coordinate.y,
             'enemy_bullet',
             30,
-            BulletPatternProvider.getPattern(BulletPatternShape.DOUBLE_EIGHT)
+            BulletPatternProvider.getPattern(BulletPatternShape.DIAMOND)
         );
         this.shoot();
     };
