@@ -72,7 +72,8 @@ const BulletPatternShape = {
     DIAMOND: 2,
     TESTS: 3,
     SPINNING_CIRCLE: 4,
-    SPINNING_DIAMOND: 5
+    SPINNING_DIAMOND: 5,
+    DOUBLE_EIGHT: 6,
 };
 
 class BulletPatternProvider{
@@ -91,20 +92,14 @@ class BulletPatternProvider{
                 pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
                 pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
                 break;
-            case BulletPatternShape.TESTS:
-                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
-                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
+            case BulletPatternShape.SPINNING_DIAMOND: //does not spin
+                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))* this.speed;";
+                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))* this.speed;";
                 break;
-            case BulletPatternShape.SPINNING_CIRCLE:
-                pattern += "this.position.x += (90*Math.cos(this.angle))*this.speed;";
-                pattern += "this.position.y += (90*Math.sin(this.angle))*this.speed;";
-                pattern += "this.angle += 0.015;";
+            case BulletPatternShape.DOUBLE_EIGHT:
+                pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*(Math.tan(this.angle) * this.speed);";
+                pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*(Math.cos(this.angle) * this.speed);";
                 break;
-            case BulletPatternShape.SPINNING_DIAMOND:
-                    pattern += "this.position.x += (120*Math.pow(Math.cos(this.angle), 3))*this.speed;";
-                    pattern += "this.position.y += (120*Math.pow(Math.sin(this.angle), 3))*this.speed;";
-                    pattern += "this.angle += 0.017;"
-                    break;
             default:
                 return;
         }
@@ -169,7 +164,7 @@ class Enemy extends Actor{
             this.coordinate.y,
             'enemy_bullet',
             30,
-            BulletPatternProvider.getPattern(BulletPatternShape.CIRCLE)
+            BulletPatternProvider.getPattern(BulletPatternShape.DOUBLE_EIGHT)
         );
         this.shoot();
     };
