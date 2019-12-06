@@ -157,7 +157,7 @@ class Enemy extends Actor{
             this.coordinate.y,
             'enemy_bullet',
             30,
-            BulletPatternProvider.getPattern(BulletPatternShape.DIAMOND)
+            BulletPatternProvider.getPattern(BulletPatternShape.CIRCLE)
         );
         this.shoot();
     };
