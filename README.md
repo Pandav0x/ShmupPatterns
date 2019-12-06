@@ -32,6 +32,13 @@ I was also able to propose three patterns for the bullets:
 |:-:|:-:|:-:|
 |<image src=".readme/bullets_c_30.gif" width="200px"/>|<image src=".readme/bullets_d_30.gif" width="200px"/>|<image src=".readme/bullets_de_30.gif" width="200px"/>|
 
+The formula for a given bullet **B(x,y,θ,v)** with **x** and **y** the coordinates of the bullet on the canvas, **θ** its angle from its source and **v** its speed:
+
+||Circle|Diamond|Double eight|
+|:-:|:-:|:-:|:-:|
+|new **x** (named **x'**)|`x' = x + 90 * cos(θ)*v`|`x' = x + 120 * (cos(θ)^3)*v`|`x' = x + 120 * (cos(θ)^3)) * tan(θ) * v`|
+|new **y** (named **y'**)|`y' = x + 90 * cos(θ) * y`|`y' = y + 120 * (cos(θ)^3)*v`|`y' = y + 120 * (cos(θ)^3)) * tan(θ) * v`|
+
 Those Three examples are with a 'standard' **30** bullets per shot. I found it to be the optimal amount of bullets as we can clearly identify the pattern while not having WebGL dying too much.
 
 Here are the last two patterns (I named them **diamond** and **double_eight**) with **200** bullets:
@@ -51,6 +58,7 @@ The little triangle on the bottom right is the player, it was intended to intera
 ## Built With
 
 * [Phaser3](https://github.com/photonstorm/phaser) v3.19.0 (included via CDN)
+* Javascript, no external library (apart from Phaser obviously).
 * All assets are free, you can use them if you'd like (I made them).
 
 ## Acknowledgments
