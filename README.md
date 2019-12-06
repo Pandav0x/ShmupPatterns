@@ -32,7 +32,7 @@ I was also able to propose three patterns for the bullets:
 |:-:|:-:|:-:|
 |<image src=".readme/bullets_c_30.gif" width="200px"/>|<image src=".readme/bullets_d_30.gif" width="200px"/>|<image src=".readme/bullets_de_30.gif" width="200px"/>|
 
-The formula for a given bullet **B(x,y,θ,v)** with **x** and **y** the coordinates of the bullet on the canvas, **θ** its angle from its source and **v** its speed:
+The formulas for a given bullet **B(x,y,θ,v)** with **x** and **y** the coordinates of the bullet on the canvas, **θ** its angle from its source and **v** its speed:
 
 ||Circle|Diamond|Double eight|
 |:-:|:-:|:-:|:-:|
