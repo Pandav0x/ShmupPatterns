@@ -36,8 +36,8 @@ The formulas for a given bullet **B(x,y,θ,v)** with **x** and **y** the coordin
 
 ||Circle|Diamond|Double eight|
 |:-:|:-:|:-:|:-:|
-|new **x** (named **x'**)|`x' = x + 90 * cos(θ)*v`|`x' = x + 120 * (cos(θ)^3)*v`|`x' = x + 120 * (cos(θ)^3)) * tan(θ) * v`|
-|new **y** (named **y'**)|`y' = x + 90 * cos(θ) * y`|`y' = y + 120 * (cos(θ)^3)*v`|`y' = y + 120 * (cos(θ)^3)) * tan(θ) * v`|
+|new **x** (named **x'**)|`x'=x+90*cos(θ)*v`|`x'=x+120*(cos(θ)^3)*v`|`x'=x+120*(cos(θ)^3))*tan(θ)*v`|
+|new **y** (named **y'**)|`y'=x+90*cos(θ)*y`|`y'=y+120*(cos(θ)^3)*v`|`y'=y+120*(cos(θ)^3))*tan(θ)*v`|
 
 Those Three examples are with a 'standard' **30** bullets per shot. I found it to be the optimal amount of bullets as we can clearly identify the pattern while not having WebGL dying too much.
 
