@@ -20,22 +20,22 @@ Be aware that the library I'm using for the game is included via a CDN call, whi
 
 I was able to easily change the number of bullets per waves, the waves intervals. Shown below is the same bullet behavior with **6** and **200** bullets.
 
-<image align="center" src=".readme/bullets_6.gif" width="200px"/>
+<image align="left" src=".readme/bullets_6.gif" width="200px"/>
 <image align="center" src=".readme/bullets_200.gif" width="200px"/>
 
 As we can see, as the number of bullets increase, some bullets become stray. I think this is due to WebGL getting too many entities to display on the canvas.
 
 I was also able to propose three patterns for the bullets:
 
-<image align="center" src=".readme/bullets_c_30.gif" width="200px"/>
+<image align="left" src=".readme/bullets_c_30.gif" width="200px"/>
 <image align="center" src=".readme/bullets_d_30.gif" width="200px"/>
-<image align="center" src=".readme/bullets_de_30.gif" width="200px"/>
+<image align="right" src=".readme/bullets_de_30.gif" width="200px"/>
 
 Those Three examples are with a 'standard' **30** bullets per shot. I found it to be the optimal amount of bullets as we can clearly identify the pattern while not having WebGL dying too much.
 
 Here are the last two patterns (I named them **diamond** and **double_eight**) with **200** bullets:
 
-<image align="center" src=".readme/bullets_d_200.gif" width="200px"/>
+<image align="left" src=".readme/bullets_d_200.gif" width="200px"/>
 <image align="center" src=".readme/bullets_de_200.gif" width="200px"/>
 
 The little triangle on the bottom right is the player, it was intended to interact with the bullets, but was just a mean for me to put extra bullets to benchmark WebGL and make il look like a more or less real game prototype.
