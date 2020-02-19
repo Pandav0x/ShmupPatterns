@@ -18,7 +18,7 @@ Be aware that the library I'm using for the game is included via a CDN call, whi
 
 ## Result
 
-I was able to easily change the number of bullets per waves, the waves intervals. Shown below is the same bullet behavior with **6** and **200** bullets.
+I was able to easily change the number of bullets per waves and the waves intervals. Shown below is the same bullet behavior with **6** and **200** bullets.
 
 |6|200|
 |:-:|:-:|
@@ -52,16 +52,15 @@ The little triangle on the bottom right is the player, it was intended to intera
 ## What I've learned
 
 * Danmaku patterns are too complex to only be tackle down by an algebra formula. As further searches on the internet had proved me, it will be easier to use a scripting language to detail the bullet behavior.
-
-* Some math I guess
+* Some math I guess.
 
 ## Built With
 
-* [Phaser3](https://github.com/photonstorm/phaser) v3.19.0 (included via CDN)
+* [Phaser3](https://github.com/photonstorm/phaser) v3.19.0 (included via CDN).
 * Javascript, no external library (apart from Phaser obviously).
 * All assets are free, you can use them if you'd like (I made them).
 
 ## Acknowledgments
 
-* Phaser, for the framework
+* Phaser, for the framework.
 * Github user [@Sparen](https://github.com/sparen) for his Danmakufu tutorials available [here](https://sparen.github.io/ph3tutorials/ph3u1l11.html).
