@@ -49,7 +49,7 @@ Here are the last two patterns (I named them **diamond** and **double_eight**) w
 
 The little triangle on the bottom right is the player, it was intended to interact with the bullets, but was just a mean for me to put extra bullets to benchmark WebGL and make il look like a more or less real game prototype.
 
-## What I learn
+## What I've learned
 
 * Danmaku patterns are too complex to only be tackle down by an algebra formula. As further searches on the internet had proved me, it will be easier to use a scripting language to detail the bullet behavior.
 
